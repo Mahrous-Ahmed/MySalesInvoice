@@ -100,6 +100,11 @@ import sig.model.LinesTable;
             if (result == JFileChooser.APPROVE_OPTION) {
                 File headerFile = fileChooser.getSelectedFile();
                 Path headerPath = Paths.get(headerFile.getAbsolutePath());
+                if(!headerFile.getAbsolutePath().endsWith(".csv")){
+                     JOptionPane.showMessageDialog(_frame, "Wrong file format", "Error", JOptionPane.ERROR_MESSAGE);
+                     return;
+                }
+                   
                 List<String> headerLines = Files.readAllLines(headerPath);
                 ArrayList<invoiceHeader> Headers = new ArrayList<>();
                 for (String headerLine : headerLines) {
@@ -108,9 +113,22 @@ import sig.model.LinesTable;
                     String str2 = arr[1];
                     String str3 = arr[2];
                     int code = Integer.parseInt(str1);
-                    Date invoiceDate = SaleInvoice.dateFormat.parse(str2);
-                    invoiceHeader header = new invoiceHeader(code, str3, invoiceDate);
-                    Headers.add(header);
+                   try{
+                       SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                
+                         Date invoiceDate = dateFormat.parse(str2);     
+                         
+                         invoiceHeader header = new invoiceHeader(code, str3, invoiceDate);
+                         Headers.add(header);
+                   }
+                   catch(Exception e ){
+                       System.out.println(e);
+                            
+                        JOptionPane.showMessageDialog(_frame, "Wrong date format", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                   }
+                   
+                  
                 }
                 _frame.setInvoicesArray(Headers);
 
@@ -118,6 +136,12 @@ import sig.model.LinesTable;
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File lineFile = fileChooser.getSelectedFile();
                     Path linePath = Paths.get(lineFile.getAbsolutePath());
+                    
+                    if(!headerFile.getAbsolutePath().endsWith(".csv")){
+                     JOptionPane.showMessageDialog(_frame, "Wrong file format", "Error", JOptionPane.ERROR_MESSAGE);
+                     return;
+                }
+                    
                     List<String> lineLines = Files.readAllLines(linePath);
                     ArrayList<invoiceLine> invoiceLines = new ArrayList<>();
                     for (String line : lineLines) {
@@ -140,11 +164,13 @@ import sig.model.LinesTable;
                 System.out.println("files read");
             }
 
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(_frame, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(_frame, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        } 
+        
+      
+      
+        catch (Exception ex) {
+            JOptionPane.showMessageDialog(_frame, "File not found", "Error", JOptionPane.ERROR_MESSAGE);
+        } 
     }
 
     private void CreateNewInvoice() {

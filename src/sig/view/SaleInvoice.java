@@ -104,14 +104,14 @@ public class SaleInvoice extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(lineTable);
 
-        Savebutt.setText("Save Changes");
+        Savebutt.setText("Create Item");
         Savebutt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SavebuttActionPerformed(evt);
             }
         });
 
-        cancelbut.setText("Cancel");
+        cancelbut.setText("Delete Item");
         cancelbut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelbutActionPerformed(evt);
